@@ -6,13 +6,13 @@
 *********************************************************************************************/
 
 //import da biblioteca readline
-var readline = require('readline');
+var readline = require('readline')
 
 //Cria o objeto para ser especialista em entrada de dados pelo teclado
 var entradaDados = readline.createInterface({
     input : process.stdin,
     output : process.stdout
-});
+})
 
 /* 
 * Criação de variáveis
@@ -27,24 +27,24 @@ var entradaDados = readline.createInterface({
 //Função e CallBack para entrar o nome do aluno
 entradaDados.question('Digite seu nome: \n', function(nome){
     //recebe o valor digitado pelo teclado
-    let nomeAluno = nome;
+    let nomeAluno = nome
 
     //Função e CallBack para entrar a nota1
     entradaDados.question('Digite a nota 1: \n', function(nota1){
-        let valor1 = nota1;
+        let valor1 = nota1
 
         //Função e CallBack para entrar a nota2
         entradaDados.question('Digite a nota 2: \n', function(nota2){
-            let valor2 = nota2;
+            let valor2 = nota2
 
             //Função e CallBack para entrar a nota3
             entradaDados.question('Digite a nota 3: \n', function(nota3){
-                let valor3 = nota3;
+                let valor3 = nota3
 
                 //Função e CallBack para entrar a nota4
                 entradaDados.question('Digite a nota 4: \n', function(nota4){
-                    let valor4 = nota4;
-                    let media;
+                    let valor4 = nota4
+                    let media
 
                     /* 
                         Conversão de tipos de dados
@@ -83,15 +83,24 @@ entradaDados.question('Digite seu nome: \n', function(nome){
 
                         console.log('ERROR: Você deixou de entrar com algum valor.')
 
-                    }else if(isNaN(valor1) || isNaN(valor2) || isNaN(valor3) || isNaN(valor4)){
+                    //Validação para entrada de texto (inválida)
+                    } else if(isNaN(valor1) || isNaN(valor2) || isNaN(valor3) || isNaN(valor4)){
 
                         console.log('ERROR: Você não digitou um número válido.')
 
-                    } else{
-
+                    //Validação de entradada de dados entre 0 e 10
+                    }else if(valor1 < 0 || valor1 > 10 || valor2 < 0 || valor2 > 10 || valor3 < 0 || valor3 > 10 || valor4 < 0 || valor4 > 10){
+                        console.log("ERROR: Insira uma nota válida")
+                    }else{
                         media = (parseFloat(valor1) + parseFloat(valor2) + parseFloat(valor3) + parseFloat(valor4)) / 4;
 
-                        console.log(media);
+                        //Status de nota
+                        if(media < 7){
+                            console.log('Você foi reprovado')    
+                        } else {
+                            console.log('Você foi aprovado')
+                        }
+                        console.log(media)
 
                     }
                 });
