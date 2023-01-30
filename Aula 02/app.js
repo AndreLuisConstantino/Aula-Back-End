@@ -2,7 +2,7 @@
 * Objetivo: Calcular a média de 4 notas escolares
 * Autor: André
 * Data: 27/01/23
-* Versão 1.0
+* Versão 1.1
 *********************************************************************************************/
 
 //import da biblioteca readline
@@ -90,7 +90,9 @@ entradaDados.question('Digite seu nome: \n', function(nome){
 
                     //Validação de entradada de dados entre 0 e 10
                     }else if(valor1 < 0 || valor1 > 10 || valor2 < 0 || valor2 > 10 || valor3 < 0 || valor3 > 10 || valor4 < 0 || valor4 > 10){
+
                         console.log("ERROR: Insira uma nota válida")
+
                     }else{
                         media = (parseFloat(valor1) + parseFloat(valor2) + parseFloat(valor3) + parseFloat(valor4)) / 4;
 
@@ -100,7 +102,8 @@ entradaDados.question('Digite seu nome: \n', function(nome){
                         } else {
                             console.log('Você foi aprovado')
                         }
-                        console.log(media)
+
+                        console.log(media.toFixed(1))
 
                     }
                 });
