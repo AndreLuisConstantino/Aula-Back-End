@@ -1,5 +1,5 @@
 /******************************************************************************************* 
-* Objetivo: MiniCalculadora
+* Objetivo: Projetar e realizar calculos matrmáticos (SOMAR, SUBTRAIR, MULTIPLICAR E DIVIDIR) - MiniCalculadora
 * Autor: André
 * Data: 27/01/23
 * Versão 1.0
@@ -98,10 +98,8 @@ entradaDados.question(' 1 para somar \n 2 para subtrair \n 3 para multiplicar \n
 
                     console.log('O seu resultado é: ' +resultadoDivisao)
                 }
-
+                
             })
         })
     }
-
-
 })
