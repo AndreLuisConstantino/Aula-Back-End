@@ -2,7 +2,7 @@
  * Objetivo: Arquivo de funções para calculos matemáticos
  * Data: 03/02/2023
  * Autor: André 
- * Versão: 1.0
+ * Versão: 1.1
  **************************************************************************************/
 
 //Função para realizar calculos matemáticos

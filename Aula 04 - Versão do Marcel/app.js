@@ -2,7 +2,7 @@
  * Objetivo: Projetar e realizar calculos matrmáticos (SOMAR, SUBTRAIR, MULTIPLICAR E DIVIDIR)
  * Data: 03/02/2023
  * Autor: André
- * Versão: 1.0
+ * Versão: 1.1
  **************************************************************************************/
 
 //Import da biblioteca da calculadora
