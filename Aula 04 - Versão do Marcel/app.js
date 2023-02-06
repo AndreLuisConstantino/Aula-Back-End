@@ -46,11 +46,15 @@ entradaDados.question('Valor: \n', function (numero1) {
                 //toLowerCase → converte uma string em mínuscula
 
                 resultado = matematica.calculadora(valor1, valor2, operacao)
-                if ( resultado != false) {
-                    console.log(resultado)
-                } else {
+
+                //Chama a função para calcular os valores(função que nós criamos)
+                //if (resultado == false && typeof (resultado) == 'boolean'){
+                if( resultado === false){
                     entradaDados.close()
+                } else {
+                    console.log(resultado)                   
                 }
+                
             }
         })
     })
