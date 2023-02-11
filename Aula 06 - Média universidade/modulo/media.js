@@ -12,8 +12,7 @@ const calculoMedia = function (notaUm, notaDois, notaTres, notaQuatro) {
     let nota4 = String(notaQuatro).replace(',', '.')
     let status = true
     let media
-    let statusDoAluno
-    let mediaDoExame
+    
 
 
     if (nota1 == '' || nota2 == '' || nota3 == '' || nota4 == '') {
@@ -25,49 +24,40 @@ const calculoMedia = function (notaUm, notaDois, notaTres, notaQuatro) {
         status = false
     } else {
         media = (Number(nota1) + Number(nota2) + Number(nota3) + Number(nota4)) / 4
-
-        if (media >= 70) {
-            statusDoAluno = ' APROVADO '
-        }
-        else {
-            statusDoAluno = ' REPROVADO '
-        }
-        console.log(media + statusDoAluno )
-        return media + statusDoAluno
+        return media
     }
 }
 
-const calculoMediaExame = function calculoExame(mediaParaSerCalculada, mediaDoExameParaSerPassada) {
+const calculoMediaExame = function calculoExame(mediaParaSerCalculada, notaDoExameParaSerPassada) {
     let media = String(mediaParaSerCalculada).replace(',', '.')
-    let mediaDoExame = String(mediaDoExameParaSerPassada).replace(',', '.')
+    let notaDoExame = String(notaDoExameParaSerPassada).replace(',', '.')
+    let mediaDoExame
     let statusDaMedia
     let status = true
 
-    if (media >= 50 || media < 70) {
-
-        let notaDoExame = 1
 
         if (notaDoExame == '') {
             status = false
         } else if (notaDoExame < 0 || notaDoExame > 100) {
             status = false
         } else {
-
             mediaDoExame = Number(media) + Number(notaDoExame) / 2
-
-            if (mediaDoExame >= 60) {
+            if(mediaDoExame > 100){
+                mediaDoExame = 100
+                statusDaMedia = ' APROVADO '
+            }
+            else if (mediaDoExame >= 60) {
                 statusDaMedia = ' APROVADO '
             } else if (mediaDoExame < 60) {
                 statusDaMedia = ' REPROVADO '
             }
         }
-        console.log(mediaDoExame + statusDaMedia)
         return mediaDoExame + statusDaMedia
-    }
+    
 }
 
 const sexoDoProfessor = function definicaoDoProfessor(sexoDoProfessorParaSerPassado){
-    let generoDoProfessor = sexoDoProfessorParaSerPassado
+    let generoDoProfessor = String(sexoDoProfessorParaSerPassado).toUpperCase()
     let statusProf
     let status = true
 
@@ -79,7 +69,6 @@ const sexoDoProfessor = function definicaoDoProfessor(sexoDoProfessorParaSerPass
         status = false
     } else if(generoDoProfessor == 'M'){
             statusProf = 'Professor'
-            console.log(statusProf)
             return statusProf
         } else {
             statusProf = 'Professora'
@@ -87,10 +76,11 @@ const sexoDoProfessor = function definicaoDoProfessor(sexoDoProfessorParaSerPass
         }    
 }   
 
-const sexoDoAluno = function definicaoDoProfessor(sexoDoAlunoParaSerPassado){
-    let generoDoAluno = sexoDoAlunoParaSerPassado
+const sexoDoAluno = function definicaoDoAluno(sexoDoAlunoParaSerPassado){
+    let generoDoAluno = String(sexoDoAlunoParaSerPassado).toUpperCase()
     let statusDoAluno
     let status = true
+
 
     if(generoDoAluno == ''){
         status = false
@@ -100,7 +90,6 @@ const sexoDoAluno = function definicaoDoProfessor(sexoDoAlunoParaSerPassado){
         status = false
     } else if (generoDoAluno == 'M'){
         statusDoAluno = 'Aluno'
-        console.log(statusDoAluno)
         return statusDoAluno
     } else {
         statusDoAluno = 'Aluna'
@@ -110,6 +99,8 @@ const sexoDoAluno = function definicaoDoProfessor(sexoDoAlunoParaSerPassado){
 
 module.exports = {
     calculoMedia,
+    calculoMediaExame,
     sexoDoProfessor,
     sexoDoAluno
 }
+
