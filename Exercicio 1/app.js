@@ -10,8 +10,6 @@ var matematica = require('./modulo/media.js')
 
 //import da biblioteca readline
 var readline = require('readline')
-const { stdout } = require('process')
-const { default: test } = require('node:test')
 
 //Cria o objeto para ser especialista em entrada de dados pelo teclado
 var entradaDados = readline.createInterface({
@@ -82,20 +80,22 @@ entradaDados.question('Digite o seu nome: \n', function (nomeDigitado) {
                                                 entradaDados.question('Digite a nota do seu exame: ', function (notaDoExameParaSerDigitada) {
                                                     notaDoExame = notaDoExameParaSerDigitada
                                                     resultadoAlunoExame = matematica.calculoMediaExame(resultadoAluno, notaDoExame)
-                                                    console.log(`O ${matematica.sexoDoAluno(sexoAluno)} ${nome} foi ${statusDoAluno} na disciplina ${disciplina}. \n ` +
-                                                        `Curso: ${curso}. \n ` +
-                                                        `${matematica.sexoDoProfessor(sexoProfessor)} : ${nomeProfessor}. \n` +
-                                                        `Notas do Aluno: ${nota1}, ${nota2}, ${nota3}, ${nota4}, Nota do Exame: ${notaDoExame}. \n ` +
-                                                        `Média Final: ${resultadoAluno}. \n ` +
+                                                    console.log('***Resultado***')
+                                                    console.log(`O ${matematica.sexoDoAluno(sexoAluno)} ${nome} foi ${statusDoAluno} na disciplina ${disciplina}.\n` +
+                                                        `Curso: ${curso}.\n` +
+                                                        `${matematica.sexoDoProfessor(sexoProfessor)} : ${nomeProfessor}.\n` +
+                                                        `Notas do Aluno: ${nota1}, ${nota2}, ${nota3}, ${nota4}, Nota do Exame: ${notaDoExame}.\n` +
+                                                        `Média Final: ${resultadoAluno}.\n` +
                                                         `Média Final do Exame: ${resultadoAlunoExame}.`
                                                     )
                                                 })
                                             } else if (statusDoAluno == ' APROVADO ' || statusDoAluno == ' REPROVADO ') {
-                                                console.log(`O ${matematica.sexoDoAluno(sexoAluno)} ${nome} foi ${statusDoAluno} na disciplina ${disciplina}. \n ` +
-                                                    `Curso: ${curso} \n ` +
+                                                console.log('***Resultado***')
+                                                console.log(`O ${matematica.sexoDoAluno(sexoAluno)} ${nome} foi ${statusDoAluno} na disciplina ${disciplina}. \n` +
+                                                    `Curso: ${curso} \n` +
                                                     `${matematica.sexoDoProfessor(sexoProfessor)} : ${nomeProfessor} \n` +
-                                                    `Notas do Aluno: ${nota1}, ${nota2}, ${nota3}, ${nota4}. \n ` +
-                                                    `Média Final: ${resultadoAluno} \n `
+                                                    `Notas do Aluno: ${nota1}, ${nota2}, ${nota3}, ${nota4}. \n` +
+                                                    `Média Final: ${resultadoAluno} \n`
                                                 )
                                             }
                                         }

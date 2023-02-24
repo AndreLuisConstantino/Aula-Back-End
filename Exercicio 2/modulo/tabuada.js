@@ -6,18 +6,19 @@
  **************************************************************************************/
 
 //Função que gera uma tabuada até uma valor específico
-const getTabuada = function (minMultiplicando, maxMultiplicador, minimoMultiplicadorDeTabuada, maximoMultiplicadorDeTabuada) {
+const getTabuada = function (tabuadaInicialDigitada, tabuadaFinalDigitada, minimoMultiplicadorDigitado, maximoMultiplicadorDigitado) {
     let tabuada
-    let tabuadaInicial = Number(String(minMultiplicando).replace(',', '.'))
-    let tabuadaFinal = Number(String(maxMultiplicador).replace(',', '.'))
-    let minimoMultiplicador = Number(String(minimoMultiplicadorDeTabuada).replace(',', '.'))
-    let maximoMultiplicador = Number(String(maximoMultiplicadorDeTabuada).replace(',', '.'))
+    let tabuadaInicial = Number(String(tabuadaInicialDigitada).replace(',', '.'))
+    let tabuadaFinal = Number(String(tabuadaFinalDigitada
+).replace(',', '.'))
+    let minimoMultiplicador = Number(String(minimoMultiplicadorDigitado).replace(',', '.'))
+    let maximoMultiplicador = Number(String(maximoMultiplicadorDigitado).replace(',', '.'))
     let status = true
     let resultado
     tabuada = minimoMultiplicador
     
 
-    if (tabuadaFinal == 0 || minimoMultiplicador == 0 || maximoMultiplicador == 0) {
+    if (tabuadaFinal == '' || minimoMultiplicador == '' || maximoMultiplicador == '') {
         console.log('Algum dos valores foi digitado como vazio.')
         status = false
     } else if (isNaN(tabuadaInicial) || isNaN(tabuadaFinal) || isNaN(minimoMultiplicador) || isNaN(maximoMultiplicador)) {
@@ -26,18 +27,21 @@ const getTabuada = function (minMultiplicando, maxMultiplicador, minimoMultiplic
     } else if (tabuadaInicial < 2 || tabuadaFinal > 100) {
         console.log('Valor de tabuada inicial/final inválido.')
         status = false
-    } else if (tabuada > 50 || tabuada < 1 || maximoMultiplicador > 50 || maximoMultiplicador < 1) {
-        console.log('O minimo multiplicador só pode ir de 1 a 50')
+    } else if (maximoMultiplicador > 50 || maximoMultiplicador < 1 || minimoMultiplicador > 50 || minimoMultiplicador < 1) {
+        console.log('A tabuada e os minimos/maximos multiplicadores só pode ir de 1 a 50')
         status = false
     }else if(tabuadaInicial > tabuadaFinal){
         console.log('A tabuada inicial não pode maior que a final.')
+        status = false
     } else {
         for (minimoMultiplicador; minimoMultiplicador <= maximoMultiplicador; minimoMultiplicador++) {
+            console.log(`Tabuada do: ${tabuada}`)
             for (contador = tabuadaInicial; contador <= tabuadaFinal; contador++) {
                 resultado = tabuada * contador
                 console.log(`${tabuada} x ${contador} = ${resultado}`)
             }
             tabuada++
+            console.log('*************')
         }
     }
 }

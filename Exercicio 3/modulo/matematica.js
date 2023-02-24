@@ -16,7 +16,7 @@ const separarParesDosImpares = function (numeroInicialDigitado, numeroFinalDigit
     } else if (numeroInicial < 0 || numeroInicial > 500) {
         console.log('O número inicial só pode estar entre 0 e 500.')
         status = false
-    } else if (numeroFinal < 0 || numeroFinal > 1000) {
+    } else if (numeroFinal < 100 || numeroFinal > 1000) {
         console.log('O número final só pode estar entre 100 e 500.')
         status = false
     } else if (numeroInicial >= numeroFinal) {

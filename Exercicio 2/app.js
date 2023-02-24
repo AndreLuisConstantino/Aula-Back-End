@@ -30,7 +30,7 @@ entradaDados.question('Digite a primeira tabuada que deseja realizar as operaç�
             entradaDados.question('Digite o máximo multiplicando: \n', function(maxMultiplicado){
                 let maximoMultiplicando = maxMultiplicado
 
-                let resultado = tabuada.getTabuada(minimoMultiplicando, maximoMultiplicando, inicioDaTabuada, finalDaTabuada)
+                let resultado = tabuada.getTabuada(inicioDaTabuada, finalDaTabuada, minimoMultiplicando, maximoMultiplicando)
                 
                 if(resultado === false){
                     console.log('Algo deu errado na sua tabuada.')
