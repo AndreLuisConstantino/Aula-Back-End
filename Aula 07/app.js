@@ -213,6 +213,7 @@ const listagemProdutos = function () {
     listProdutosJson.produtos[2].cores = listCoresTecladoArray
     listProdutosJson.produtos[3].cores = listCoresMouseArray
     listProdutosJson.produtos[4].cores = listCoresMouseArray
+    listProdutosJson.produtos[5].cores = listCoresMouseArray
 
     //Adicionar modelos aos monitores
     listProdutosJson.produtos[0].modelo = listModelosMonitor
@@ -234,9 +235,15 @@ const listagemProdutos = function () {
         console.log(`Marca: ${listProdutosJson.produtos[contador].marca}`)
         console.log(`Valor: ${listProdutosJson.produtos[contador].valor}`)  
         console.log(`Código: ${listProdutosJson.produtos[contador].codigo}`)  
-        let tamanhoCores = listProdutosJson.produtos[contador].cores.length
-        for(let contadorCores = 0; contadorCores < tamanhoCores; contadorCores++){
+        let contCor = 0
+        for(let contadorCores = contCor; contadorCores < listProdutosJson.produtos[contador].cores.length; contadorCores++){
             console.log(`Cores: ${listProdutosJson.produtos[contador].cores[contadorCores]}`)
+        }
+        if(contador <= 3){
+            let contadorModelo = 0
+            for(let contadorModel = contadorModelo; contadorModel < listProdutosJson.produtos[contador].modelo.length; contadorModel++){
+                console.log(`Modelo: ${listProdutosJson.produtos[contador].modelo[contadorModel]}`)
+            }
         }
         console.log('****************************************')
     }
