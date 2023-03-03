@@ -18,10 +18,27 @@ const getListaDeEstados = function(){
    })
 
    jsonListaDeEstados = {
-      uf
+      uf,
+      quantidade: brasil.estadosCidades.estados.length
    }
    
    return jsonListaDeEstados
 }
 
-console.log(getListaDeEstados())
+const getDadosEstado = function(sigla){
+    jsonListasDeDadosEstado = {}
+
+    brasil.estadosCidades.estados.forEach(function(estado){
+        if(estado.sigla == sigla){
+            jsonListasDeDadosEstado = {
+                uf: estado.sigla,
+                descricao: estado.nome,
+                capital: estado.capital,
+                regiao: estado.regiao
+            }
+        }
+    })
+    return jsonListasDeDadosEstado
+}
+
+console.log(getDadosEstado('SP'))
