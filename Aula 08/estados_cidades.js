@@ -22500,20 +22500,6 @@ var estadosCidades = {
     ]
 };
 
-
-const getListaDeEstados = function(){
-   let jsonListaDeEstados = {}
-   let uf = []
-
-   estadosCidades.estados.forEach(function(estado){
-      uf.push(estado.sigla)
-   })
-
-   jsonListaDeEstados = {
-      uf
-   }
-   
-   return jsonListaDeEstados
+module.exports = {
+      estadosCidades
 }
-
-console.log(getListaDeEstados())
