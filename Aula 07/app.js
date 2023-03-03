@@ -66,11 +66,11 @@ const manipulandoDados = function () {
     listaProdutos.unshift('HD', 'PLACA-MÃE', 'SSD M.2')
     console.table(listaProdutos)
 
-    //pop - Remove o ultimo item do Array, preservando os elementos anteriores
+    //pop - Remove o ultimo itemProduto do Array, preservando os elementos anteriores
     listaProdutos.pop()
     console.table(listaProdutos)
 
-    //shift - Remove o item do inicio do Array, re-organizando todos os elementos
+    //shift - Remove o itemProduto do inicio do Array, re-organizando todos os elementos
     listaProdutos.shift()
     console.table(listaProdutos)
 
@@ -78,16 +78,16 @@ const manipulandoDados = function () {
     const novosProdutos = listaProdutos.slice()
     console.log(listaProdutos)
 
-    //indexOf - Permite buscar dentro de um Array um item
-    //Se o retorno for -1, o item  não foi encontrado
-    //Se o retorno for maior ou igual a zero, o item encontrado e ele retorna o indice
+    //indexOf - Permite buscar dentro de um Array um itemProduto
+    //Se o retorno for -1, o itemProduto  não foi encontrado
+    //Se o retorno for maior ou igual a zero, o itemProduto encontrado e ele retorna o indice
     console.log(listaProdutos.indexOf('Mouse GPRO SuperLight'))
 
     //Exemplo de utilização do indexOf()
     if (listaProdutos.indexOf('PC') >= 0) {
-        console.log('Item encontrado.')
+        console.log('itemProduto encontrado.')
     } else {
-        console.log('Item não encontrado.')
+        console.log('itemProduto não encontrado.')
     }
 }
 
@@ -109,7 +109,7 @@ const removerProduto = function (nomeProduto) {
     return status
 }
 
-const removerItem = function (nome, array) {
+const removeritemProduto = function (nome, array) {
     //Entrada
     const listaProdutosNova = array.slice()
     let indice = listaProdutosNova.indexOf(nome)
@@ -126,6 +126,7 @@ const removerItem = function (nome, array) {
     //Saída
     return status
 }
+
 const listagemProdutos = function () {
 
     //Forma nº1 de criar um Json e já atribuir chaves e valores
@@ -230,25 +231,50 @@ const listagemProdutos = function () {
     // console.log(`Cor: ${listProdutosJson.produtos[1].cores[1]}`)
     // console.log(`Modelo: ${listProdutosJson.produtos[1].modelo[1]}`)
 
-    for (let contador = 0; contador < listProdutosJson.produtos.length; contador++) {
-        console.log(`Nome: ${listProdutosJson.produtos[contador].nome}`)
-        console.log(`Marca: ${listProdutosJson.produtos[contador].marca}`)
-        console.log(`Valor: ${listProdutosJson.produtos[contador].valor}`)  
-        console.log(`Código: ${listProdutosJson.produtos[contador].codigo}`)  
-        let contCor = 0
-        for(let contadorCores = contCor; contadorCores < listProdutosJson.produtos[contador].cores.length; contadorCores++){
-            console.log(`Cores: ${listProdutosJson.produtos[contador].cores[contadorCores]}`)
+    //Print feita com o for:
+    // for (let contador = 0; contador < listProdutosJson.produtos.length; contador++) {
+    //     console.log(`Nome: ${listProdutosJson.produtos[contador].nome}`)
+    //     console.log(`Marca: ${listProdutosJson.produtos[contador].marca}`)
+    //     console.log(`Valor: ${listProdutosJson.produtos[contador].valor}`)  
+    //     console.log(`Código: ${listProdutosJson.produtos[contador].codigo}`)  
+    //     let contCor = 0
+    //     for(let contadorCores = contCor; contadorCores < listProdutosJson.produtos[contador].cores.length; contadorCores++){
+    //         console.log(`Cores: ${listProdutosJson.produtos[contador].cores[contadorCores]}`)
+    //     }
+    //     if(contador <= 3){
+    //         let contadorModelo = 0
+    //         for(let contadorModel = contadorModelo; contadorModel < listProdutosJson.produtos[contador].modelo.length; contadorModel++){
+    //             console.log(`Modelo: ${listProdutosJson.produtos[contador].modelo[contadorModel]}`)
+    //         }
+    //     }
+    //     console.log('****************************************')
+    // }
+
+    //Percorre o Array de produtos para listar os itens
+    listProdutosJson.produtos.forEach(function (itemProduto) {
+        console.log(`Nome: ${itemProduto.nome}`)
+        console.log(`Marca: ${itemProduto.marca}`)
+        console.log(`Valor: ${itemProduto.valor}`)
+        console.log(`Código: ${itemProduto.codigo}`)
+
+        //Tratamento de erro para quando não existir Array de cores
+        if (itemProduto.cores != undefined) {
+            //Percorre o Array de cores que está no itemProduto
+            itemProduto.cores.forEach(function (itemCores) {
+                console.log('**** Cores: ' + itemCores);
+            })
         }
-        if(contador <= 3){
-            let contadorModelo = 0
-            for(let contadorModel = contadorModelo; contadorModel < listProdutosJson.produtos[contador].modelo.length; contadorModel++){
-                console.log(`Modelo: ${listProdutosJson.produtos[contador].modelo[contadorModel]}`)
-            }
+        //Para quando não existir Array de modelos
+        if (itemProduto.modelo != undefined) {
+            //Percorre o  Array de modelos que está dentro do Array de produtos
+            itemProduto.modelo.forEach(function (itemModelo) {
+                console.log('**** Modelos: ' + itemModelo)
+            })
         }
-        console.log('****************************************')
-    }
+        console.log('*******************************')
+    })
 }
 
 listagemProdutos()
-// console.table(removerItem('HD', listaProdutos))
+// console.table(removeritemProduto('HD', listaProdutos))
 // console.table(listaProdutos)
