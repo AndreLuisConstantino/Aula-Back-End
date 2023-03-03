@@ -237,8 +237,7 @@ const listagemProdutos = function () {
     //     console.log(`Marca: ${listProdutosJson.produtos[contador].marca}`)
     //     console.log(`Valor: ${listProdutosJson.produtos[contador].valor}`)  
     //     console.log(`Código: ${listProdutosJson.produtos[contador].codigo}`)  
-    //     let contCor = 0
-    //     for(let contadorCores = contCor; contadorCores < listProdutosJson.produtos[contador].cores.length; contadorCores++){
+    //     for(let contadorCores = 0; contadorCores < listProdutosJson.produtos[contador].cores.length; contadorCores++){
     //         console.log(`Cores: ${listProdutosJson.produtos[contador].cores[contadorCores]}`)
     //     }
     //     if(contador <= 3){
@@ -256,7 +255,6 @@ const listagemProdutos = function () {
         console.log(`Marca: ${itemProduto.marca}`)
         console.log(`Valor: ${itemProduto.valor}`)
         console.log(`Código: ${itemProduto.codigo}`)
-
         //Tratamento de erro para quando não existir Array de cores
         if (itemProduto.cores != undefined) {
             //Percorre o Array de cores que está no itemProduto
