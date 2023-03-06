@@ -53,7 +53,7 @@ const getCapitalEstado = function (sigla) {
     let status = false
 
     brasil.estadosCidades.estados.forEach(function (estado) {
-        if (estado.sigla == sigla){
+        if (estado.sigla == sigla) {
             jsonListaCapitalDoEstado = {
                 uf: estado.sigla,
                 descricao: estado.nome,
@@ -69,4 +69,34 @@ const getCapitalEstado = function (sigla) {
         return false
 }
 
-console.log(getCapitalEstado('Sj'))
+const getEstadosRegiao = function (regiaoVar) {
+    let jsonListaDeEstadosPorRegiao = {}
+    let status = false
+    let estados = []
+    let regiao = regiaoVar
+
+    brasil.estadosCidades.estados.forEach(function (estadoVar) {
+        let estado = estadoVar
+        let jsonEstadoDaRegiao = {}
+        if (regiao == estado.regiao) {
+           jsonEstadoDaRegiao.uf = estado.sigla
+           jsonEstadoDaRegiao.descricao = estado.nome
+
+           jsonListaDeEstadosPorRegiao = {
+            regiao: estado.regiao,
+            estados
+        }
+           estados.push(jsonEstadoDaRegiao)
+        }
+        status = true
+    })
+
+    
+
+    if (status == true)
+        return jsonListaDeEstadosPorRegiao
+    else
+        return false
+}
+
+console.log(getEstadosRegiao('Sudeste'))
