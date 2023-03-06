@@ -1,8 +1,8 @@
 /*****************************************************************************
  * Objetivo: Retornar diversos valores de JSON filtrados para uma API
- * Data: 03/03/2023
+ * Data: 06/03/2023
  * Autor: André
- * Versão: 1.0
+ * Versão: 1.1
  *****************************************************************************/
 
 var estadosCidades = { 
