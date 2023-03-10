@@ -1,8 +1,8 @@
 /*****************************************************************************
  * Objetivo: Retornar diversos valores de JSON filtrados para uma API
- * Data: 06/03/2023
+ * Data: 10/03/2023
  * Autor: André
- * Versão: 1.1
+ * Versão: 2.0 
  *****************************************************************************/
 
 var brasil = require('./estados_cidades')
@@ -151,4 +151,11 @@ const getCidades = function(uf){
         return false
 }
 
-console.log(getEstadosRegiao('Sudeste'))
+module.exports = {
+    getListaDeEstados,
+    getDadosEstado,
+    getCapitalEstado,
+    getEstadosRegiao,
+    getCapitalPais,
+    getCidades
+}
