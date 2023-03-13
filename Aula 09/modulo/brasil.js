@@ -27,9 +27,8 @@ const getDadosEstado = function (sigla) {
     let jsonListaDeDadosEstado = {}
     let status = false
 
-
     brasil.estadosCidades.estados.forEach(function (estado) {
-        if (estado.sigla == sigla) {
+        if (estado.sigla.toUpperCase() == sigla.toUpperCase()) {
             jsonListaDeDadosEstado = {
                 uf: estado.sigla,
                 descricao: estado.nome,
@@ -51,7 +50,7 @@ const getCapitalEstado = function (sigla) {
     let status = false
 
     brasil.estadosCidades.estados.forEach(function (estado) {
-        if (estado.sigla == sigla) {
+        if (estado.sigla.toUpperCase() == sigla.toUpperCase()) {
             jsonListaCapitalDoEstado = {
                 uf: estado.sigla,
                 descricao: estado.nome,
@@ -76,25 +75,25 @@ const getEstadosRegiao = function (regiaoVar) {
     brasil.estadosCidades.estados.forEach(function (estadoVar) {
         let estado = estadoVar
         let jsonEstadoDaRegiao = {}
-        if (regiao == estado.regiao) {
+        if (regiao.toUpperCase() == estado.regiao.toUpperCase()) {
             jsonEstadoDaRegiao.uf = estado.sigla
             jsonEstadoDaRegiao.descricao = estado.nome
-
+            
+            estados.push(jsonEstadoDaRegiao)
+            
             jsonListaDeEstadosPorRegiao = {
                 regiao: estado.regiao,
                 estados
             }
-            estados.push(jsonEstadoDaRegiao)
+
         }
         status = true
     })
 
-
-
     if (status == true)
         return jsonListaDeEstadosPorRegiao
     else
-        return false
+        return status
 }
 
 const getCapitalPais = function () {
@@ -115,29 +114,28 @@ const getCapitalPais = function () {
 
             arrayDeCapitais.push(jsonCapitais)
         }
-        
         jsonListaDeCapitais.capitais = arrayDeCapitais
         status = true
     })
-   
-    
+
+
     if (status == true)
         return jsonListaDeCapitais
     else
-        return false
+        return status
 }
 
-const getCidades = function(uf){
+const getCidades = function (uf) {
     let jsonListaCidades = {}
     let arrayCidades = []
     let status = false
 
-    brasil.estadosCidades.estados.forEach(function (estado){
-        if(uf == estado.sigla){
+    brasil.estadosCidades.estados.forEach(function (estado) {
+        if (uf.toUpperCase() == estado.sigla) {
             jsonListaCidades.uf = estado.sigla
             jsonListaCidades.descricao = estado.nome
             jsonListaCidades.quantidade_cidades = estado.cidades.length
-            estado.cidades.forEach(function (cidade){
+            estado.cidades.forEach(function (cidade) {
                 arrayCidades.push(cidade.nome)
             })
         }
@@ -148,7 +146,7 @@ const getCidades = function(uf){
     if (status == true)
         return jsonListaCidades
     else
-        return false
+        return status
 }
 
 module.exports = {
