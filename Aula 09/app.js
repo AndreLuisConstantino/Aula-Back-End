@@ -53,7 +53,7 @@ app.use((request, response, next) => {
 pois o front acha que API está fora do ar */
 
 //Endpoint para listar todos os estados.
-app.get('/estados', cors(), async function (request, response, next) {
+app.get('/v1/senai/estados', cors(), async function (request, response, next) {
 
     //Chama a função que vai listar todos os estados
     let estados = estadosCidades.getListaDeEstados()
@@ -69,12 +69,12 @@ app.get('/estados', cors(), async function (request, response, next) {
 })
 
 //Endpoint: Lista os dados do estado filtrando pela sigla
-app.get('/estado/:uf', cors(), async function (request, response, next) {
+app.get('/v1/senai/estado', cors(), async function (request, response, next) {
     let statusCode
     let dadosCapitalDoEstado = {}
 
     //Recebe uma sigla do estado que será enviada pela URL da requisição
-    let siglaEstado = request.params.uf
+    let siglaEstado = request.query.uf
 
     //Tratamento para validação de entrada de dados incorreta
     if (siglaEstado == '' || siglaEstado == undefined || siglaEstado.length != 2 || !isNaN(siglaEstado)) {
@@ -82,7 +82,7 @@ app.get('/estado/:uf', cors(), async function (request, response, next) {
         dadosCapitalDoEstado.message = 'Não foi possivel processar pois os dados de entrada(uf) que foi enviado não corresponde ao exigido, confira o valor, pois não pode ser vazio, precisa tercaracteres e ter 2 digitos.'
     } else {
         //Chama a função para retornar os dados do estado
-        let estado = estadosCidades.getDadosCapitalDoEstado(siglaEstado)
+        let estado = estadosCidades.getDadosEstado(siglaEstado)
 
         if (estado) {
             statusCode = 200
@@ -96,7 +96,7 @@ app.get('/estado/:uf', cors(), async function (request, response, next) {
     response.json(dadosCapitalDoEstado)
 })
 
-app.get('/capital/:uf', cors(), async function (request, response, next) {
+app.get('/v2/senai/capital/sigla/:uf', cors(), async function (request, response, next) {
     let statusCode
     let dadosCapitalDoEstado = {}
 
@@ -119,7 +119,7 @@ app.get('/capital/:uf', cors(), async function (request, response, next) {
     response.json(dadosCapitalDoEstado)
 })
 
-app.get('/estados_da_regiao/:regiao', cors(), async function (request, response, next) {
+app.get('/v1/senai/estados_da_regiao/nome-da-regiao/:regiao', cors(), async function (request, response, next) {
     let statusCode
     let dadosRegiao = {}
 
@@ -142,7 +142,7 @@ app.get('/estados_da_regiao/:regiao', cors(), async function (request, response,
     response.json(dadosRegiao)
 })
 
-app.get('/capitais', cors(), async function (request, response, next){
+app.get('/v1/senai/capitais', cors(), async function (request, response, next){
     let statusCode
     let dadosCapitais
 
@@ -158,31 +158,64 @@ app.get('/capitais', cors(), async function (request, response, next){
     response.json(dadosCapitais)
 })
 
-app.get('/cidades_do_estado/:uf', cors(), async function(request, response, next){
+app.get('/v1/senai/cidades/estado/sigla/:uf', cors(), async function(request, response, next){
     let statusCode 
-    let dadosDasCidadesDoEstado = {}
+    let dadosCidadesDoEstado = {}
 
     let siglaEstado = request.params.uf
 
     if(siglaEstado == '' || siglaEstado == undefined || siglaEstado.length != 2 || !isNaN(siglaEstado)){
         statusCode = 400
-        dadosDasCidadesDoEstado.message = 'Não foi possivel processar pois os dados de entrada(uf) que foi enviado não corresponde ao exigido, confira o valor, pois não pode ser vazio, precisa tercaracteres e ter 2 digitos.'
+        dadosCidadesDoEstado.message = 'Não foi possivel processar pois os dados de entrada(uf) que foi enviado não corresponde ao exigido, confira o valor, pois não pode ser vazio, precisa tercaracteres e ter 2 digitos.'
     } else {
         let cidades = estadosCidades.getCidades(siglaEstado)
 
         if(cidades){
             statusCode = 200
-            dadosDasCidadesDoEstado = cidades
+            dadosCidadesDoEstado = cidades
         } else{
             statusCode = 404
         }
     }
     response.status(statusCode)
-    response.json(dadosDasCidadesDoEstado)
+    response.json(dadosCidadesDoEstado)
+})
+
+
+app.get('/v2/senai/cidades', cors(), async function(request, response, next){
+    /* 
+        Existem 2 opções para receber variáveis pelo filtro:
+            params - que permite receber a variáveç na estrutura URL criada no endPoint (geralmente utilizado para ID)
+
+            query - Também conhecido como queryString permite receber uma ou mais variáveis para realizar filtros avançados
+    */
+    
+    //Recebe uma variável encaminhada via QueryString
+    let siglaEstado = request.query.uf
+    //let cepEstado = request.query.cep
+    //let populaçãoEstado = request.query.populacao
+    
+    let statusCode 
+    let dadosCidades = {}
+
+    if(siglaEstado == '' || siglaEstado == undefined || siglaEstado.length != 2 || !isNaN(siglaEstado)){
+        statusCode = 400
+        dadosCidades.message = 'Não foi possivel processar pois os dados de entrada(uf) que foi enviado não corresponde ao exigido, confira o valor, pois não pode ser vazio, precisa tercaracteres e ter 2 digitos.'
+    } else {
+        let cidades = estadosCidades.getCidades(siglaEstado)
+
+        if(cidades){
+            statusCode = 200
+            dadosCidades = cidades
+        } else{
+            statusCode = 404
+        }
+    }
+    response.status(statusCode)
+    response.json(dadosCidades)
 })
 
 //Roda o serviço para a API para ficar aguardando as requisições
 app.listen(8080, function () {
     console.log('Servidor aguardando na porta 8080')
 })
-
