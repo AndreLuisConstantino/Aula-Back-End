@@ -69,23 +69,20 @@ app.use((request, response, next) => {
         let dadosAluno = {}
         let statusCode
         let id = request.params.id
+        let aluno = await controllerAluno.getBuscarAlunoID(id)
+
+        dadosAluno.aluno = aluno
 
         if(id == '' || id == undefined  || isNaN(id)){
-            statusCode = 400
-            dadosAluno.message = "Por favor verifique se o id está preenchido corretamente"
+            response.status(400)
         } else {
-            let aluno = await controllerAluno.getBuscarAlunoID(id)
-
             if(aluno){
-                statusCode = 200
-                dadosAluno.aluno = aluno
+                response.status(200)
+                response.json(dadosAluno)
             } else {
-                statusCode = 404
+                response.status(404)
             }
         }
-        response.json(dadosAluno)
-        response.status(statusCode)
-
     })
 
     //Retorna todos o aluno filtrando pelo nome

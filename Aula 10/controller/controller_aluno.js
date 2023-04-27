@@ -15,12 +15,12 @@ const inserirAluno = function (dadosAluno) {
 
 //Atualizar um aluno existente
 const atualizarAluno = function (dadosAluno) {
-    
+
 }
 
 //Função que deleta um aluno
 const deletarAluno = function (id) {
-    
+
 }
 
 //Retorna a lista de todos os alunos
@@ -30,7 +30,7 @@ const getAlunos = async function () {
     //Chama a função do arquivo DAO que irá retornar todos os registros do BD
     let dadosAluno = await alunoDAO.selectAllAlunos()
 
-    if(dadosAluno){
+    if (dadosAluno) {
         //Criando um JSON com o atributo alunos, para encaminhar o array de alunos
         dadosAlunosJson.quantidade = dadosAluno.length
         dadosAlunosJson.alunos = dadosAluno
@@ -46,12 +46,11 @@ const getBuscarAlunoID = async function (id) {
     let dadosAlunoJson = {}
 
     let dadosAluno = await alunoDAO.selectByIdAluno(id)
-    if(dadosAluno == false){
-        return false
-    }
-    
-    if(dadosAluno){
-        dadosAlunoJson.aluno = dadosAluno
+
+    dadosAlunoJson.aluno = dadosAluno
+
+    if (dadosAluno) {
+        return dadosAlunoJson
     } else {
         return false
     }
