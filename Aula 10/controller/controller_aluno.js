@@ -13,21 +13,21 @@ var alunoDAO = require('../model/dao/alunoDAO.js')
 
 //Função que insere um novo aluno
 const inserirAluno = async function (dadosAluno) {
-    
+
     //Validação para tratar campos obrigatórios e quantidade de caracteres
-    if(dadosAluno.nome == ''            || dadosAluno.nome == undefined                 || dadosAluno.nome.length > 100             ||
-       dadosAluno.rg == ''              || dadosAluno.rg ==  undefined                  || dadosAluno.rg.length > 15                ||
-       dadosAluno.cpf == ''             || dadosAluno.cpf ==  undefined                 || dadosAluno.cpf.length > 18               ||
-       dadosAluno.data_nascimento == '' || dadosAluno.data_nascimento ==  undefined     || dadosAluno.data_nascimento.length > 10   ||
-       dadosAluno.email == ''           || dadosAluno.email ==  undefined               || dadosAluno.email.length > 200 
-       ){
-            return message.ERROR_REQUIRED_FIELDS //StatusCode 400
+    if (dadosAluno.nome == '' || dadosAluno.nome == undefined || dadosAluno.nome.length > 100 ||
+        dadosAluno.rg == '' || dadosAluno.rg == undefined || dadosAluno.rg.length > 15 ||
+        dadosAluno.cpf == '' || dadosAluno.cpf == undefined || dadosAluno.cpf.length > 18 ||
+        dadosAluno.data_nascimento == '' || dadosAluno.data_nascimento == undefined || dadosAluno.data_nascimento.length > 10 ||
+        dadosAluno.email == '' || dadosAluno.email == undefined || dadosAluno.email.length > 200
+    ) {
+        return message.ERROR_REQUIRED_FIELDS //StatusCode 400
     } else {
         //Envia os dados para a model inserir no banco de dados
         let resultDadosAluno = await alunoDAO.insertAluno(dadosAluno)
 
         //Valida se o BD inseriu corretamente os dados
-        if(resultDadosAluno){
+        if (resultDadosAluno) {
             return message.SUCCESS_CREATED_ITEM //StatusCode 201
         } else {
             return message.ERROR_INTERNAL_SERVER //StatusCode 500
@@ -69,17 +69,40 @@ const getBuscarAlunoID = async function (id) {
 
     let dadosAluno = await alunoDAO.selectByIdAluno(id)
 
-    dadosAlunoJson.aluno = dadosAluno
-
-    if (dadosAluno) {
-        return dadosAlunoJson
-    } else {
+    if (dadosAluno == false || dadosAluno == undefined || dadosAluno == null) {
         return false
+    } else {
+        dadosAlunoJson = dadosAluno
+        if (dadosAluno) {
+            return dadosAlunoJson
+        } else {
+            return false
+        }
+    }
+
+
+}
+
+//Retorna a lista dos alunos que possuem o nome solicitado
+const getBuscarAlunoName =  async function (name) {
+
+
+    if(name == '' || name == undefined || name == null){
+        return message.ERROR_MISTAKE_IN_THE_FILDS
+    } else {
+        let dadosAluno = await alunoDAO.selectByNameAluno(name)
+
+        if(dadosAluno){
+            return dadosAluno
+        } else {
+            return false
+        }
     }
 }
 
 module.exports = {
     getAlunos,
     getBuscarAlunoID,
-    inserirAluno
+    inserirAluno,
+    getBuscarAlunoName
 }

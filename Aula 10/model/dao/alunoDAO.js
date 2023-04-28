@@ -85,11 +85,22 @@ const selectByIdAluno = async function (id) {
 }
 
 const selectByNameAluno = async function (name) {
-    let sql = `select * fro tbl_aluno like`
+
+    let sql = `select * from tbl_aluno where nome like '%${name}%'`
+
+    let rsAluno = await prisma.$queryRawUnsafe(sql)
+
+    //Valida se o BD retornou algum registro
+    if (rsAluno.length > 0) {
+        return rsAluno
+    } else {
+        return false
+    }
 }
 
 module.exports = {
     selectAllAlunos,
     selectByIdAluno,
-    insertAluno
+    insertAluno, 
+    selectByNameAluno
 }

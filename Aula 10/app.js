@@ -31,7 +31,7 @@ app.use((request, response, next) => {
     //Define quem poderá acessar a API (* = Todos)
     response.header('Acess-Control-Allow-Origin', '*')
     //Define quais métodos serão utilizados na API
-    response.header('Acess-Control-Allow-Methods','GET, POST, PUT, DELETE, OPTIONS')
+    response.header('Acess-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
 
     //Atribui as permissões ao Cors
     app.use(cors())
@@ -48,74 +48,94 @@ app.use((request, response, next) => {
 * Versão: 1.1
 ***********************************************************/
 
-    //Define que os dados que iram chegar na requisição será no padrão JSON
-    const bodyParserJSON = bodyParser.json
+//Define que os dados que iram chegar na requisição será no padrão JSON
+const bodyParserJSON = bodyParser.json()
 
-    //Retorna todos os dados de alunos
-    app.get('/v1/lion-school/aluno', cors(), async function (request, response) {
+//Retorna todos os dados de alunos
+app.get('/v1/lion-school/aluno', cors(), async function (request, response) {
 
-        //Recebe os dados da controllerAluno 
-        let dadosAluno = await controllerAluno.getAlunos()
+    let dadosAluno = {}
 
-        //Valida se exite registros de aluno
-        if(dadosAluno){
-            response.json(dadosAluno)
-            response.status(200)
-        } else {
-            response.json()
-            response.status(404)
-        }
-    })
+    let nomeAluno = request.query.nome
 
-    //Retorna todos o aluno filtrando pelo ID
-    app.get('/v1/lion-school/aluno/:id', cors(), async function (request, response) {
-        let dadosAluno = {}
-        let statusCode
-        let id = request.params.id
-        let aluno = await controllerAluno.getBuscarAlunoID(id)
 
-        dadosAluno.aluno = aluno
+    if (nomeAluno != undefined) {
 
-        if(id == '' || id == undefined  || isNaN(id)){
+        let resultAluno = await controllerAluno.getBuscarAlunoName(nomeAluno)
+
+        dadosAluno.aluno = resultAluno
+
+        if (resultAluno == false || resultAluno == undefined || resultAluno == null) {
             response.status(400)
-            response.json({message: 'O ID passado está vazio ou não é um número'})
+            response.json('O nome enviado está incorreto')
         } else {
-            if(aluno){
+            if (resultAluno) {
                 response.status(200)
                 response.json(dadosAluno)
             } else {
                 response.status(404)
-                response.json({message: 'Não foi encontrado nenhum aluno'})
+                response.json('Nenhum aluno encontrado no sistema')
             }
         }
-    })
+    } else {
 
-    //Retorna todos o aluno filtrando pelo nome
-    app.get('/v1/lion-school/aluno/:nome', cors(), async function (request, response) {
+        //Recebe os dados da controllerAluno 
+        let aluno = await controllerAluno.getAlunos()
+        dadosAluno = aluno
 
-    })
+        if (aluno) {
+            response.status(200)
+            response.json(dadosAluno)
+        } else {
+            response.status(404)
+            response.json('Aluno não encontrado no sistema')
+        }
+    }
+})
 
-    //Insere um aluno novo 
-    app.post('/v1/lion-school/aluno', cors(), bodyParserJSON, async function (request, response) {
+//Retorna todos o aluno filtrando pelo ID
+app.get('/v1/lion-school/aluno/:id', cors(), async function (request, response) {
+    let dadosAluno = {}
+    let id = request.params.id
+    let aluno = await controllerAluno.getBuscarAlunoID(id)
 
-        //Recebe os dados encaminhados na requisição
-        let dadosBody = request.body
-        console.log(dadosBody);
+    dadosAluno.aluno = aluno
 
-        let resultDadosAluno = await controllerAluno.inserirAluno(dadosBody)
+    if (id == '' || id == undefined || isNaN(id)) {
+        response.status(400)
+        response.json({ message: 'O ID passado está vazio ou não é um número' })
+    } else {
+        if (aluno) {
+            response.status(200)
+            response.json(dadosAluno)
+        } else {
+            response.status(404)
+            response.json({ message: 'Não foi encontrado nenhum aluno' })
+        }
+    }
+})
 
-        response.status(resultDadosAluno.status)
-        response.json(resultDadosAluno)
-    })
 
-    //Atualiza um aluno existente filtrando pelo ID
-    app.put('/v1/lion-school/aluno/:id', cors(), async function (request, response) {
+//Insere um aluno novo 
+app.post('/v1/lion-school/aluno', cors(), bodyParserJSON, async function (request, response) {
 
-    })
+    //Recebe os dados encaminhados na requisição
+    let dadosBody = request.body
 
-    //Exclui um aluno filtrando pelo ID
-    app.delete('/v1/lion-school/aluno/:id', cors(), async function (request, response) {
+    let resultDadosAluno = await controllerAluno.inserirAluno(dadosBody)
 
-    })
+    response.status(resultDadosAluno.status)
+    response.json(resultDadosAluno)
+})
+
+//Atualiza um aluno existente filtrando pelo ID
+app.put('/v1/lion-school/aluno/:id', cors(), async function (request, response) {
+
+})
+
+//Exclui um aluno filtrando pelo ID
+app.delete('/v1/lion-school/aluno/:id', cors(), async function (request, response) {
+
+})
 
 app.listen(8080, () => console.log('Servidor aguardando na porta 8080'))
