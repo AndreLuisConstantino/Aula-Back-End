@@ -1,16 +1,38 @@
 /*********************************************************** 
 * Objetivo: Responsavel pela regra de negócio referente ao CRUD de alunos
-* Data: 14/04/2023
+* Data: 28/04/2023
 * Autor: André
-* Versão: 1.0
+* Versão: 1.1
 **********************************************************/
+
+//Import do arquivo de configuração das variáveis, constantes e funções globais
+var message = require('./modulo/config.js')
 
 //Import do arquivo DAO para acessar dados do aluno no BD
 var alunoDAO = require('../model/dao/alunoDAO.js')
 
 //Função que insere um novo aluno
-const inserirAluno = function (dadosAluno) {
+const inserirAluno = async function (dadosAluno) {
+    
+    //Validação para tratar campos obrigatórios e quantidade de caracteres
+    if(dadosAluno.nome == ''            || dadosAluno.nome == undefined                 || dadosAluno.nome.length > 100             ||
+       dadosAluno.rg == ''              || dadosAluno.rg ==  undefined                  || dadosAluno.rg.length > 15                ||
+       dadosAluno.cpf == ''             || dadosAluno.cpf ==  undefined                 || dadosAluno.cpf.length > 18               ||
+       dadosAluno.data_nascimento == '' || dadosAluno.data_nascimento ==  undefined     || dadosAluno.data_nascimento.length > 10   ||
+       dadosAluno.email == ''           || dadosAluno.email ==  undefined               || dadosAluno.email.length > 200 
+       ){
+            return message.ERROR_REQUIRED_FIELDS //StatusCode 400
+    } else {
+        //Envia os dados para a model inserir no banco de dados
+        let resultDadosAluno = await alunoDAO.insertAluno(dadosAluno)
 
+        //Valida se o BD inseriu corretamente os dados
+        if(resultDadosAluno){
+            return message.SUCCESS_CREATED_ITEM //StatusCode 201
+        } else {
+            return message.ERROR_INTERNAL_SERVER //StatusCode 500
+        }
+    }
 }
 
 //Atualizar um aluno existente
@@ -58,5 +80,6 @@ const getBuscarAlunoID = async function (id) {
 
 module.exports = {
     getAlunos,
-    getBuscarAlunoID
+    getBuscarAlunoID,
+    inserirAluno
 }

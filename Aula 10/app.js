@@ -43,10 +43,13 @@ app.use((request, response, next) => {
 
 /*********************************************************** 
 * Objetivo: API de controle de alunos
-* Data: 14/04/2023
+* Data: 28/04/2023
 * Autor: André
-* Versão: 1.0
+* Versão: 1.1
 ***********************************************************/
+
+    //Define que os dados que iram chegar na requisição será no padrão JSON
+    const bodyParserJSON = bodyParser.json
 
     //Retorna todos os dados de alunos
     app.get('/v1/lion-school/aluno', cors(), async function (request, response) {
@@ -75,12 +78,14 @@ app.use((request, response, next) => {
 
         if(id == '' || id == undefined  || isNaN(id)){
             response.status(400)
+            response.json({message: 'O ID passado está vazio ou não é um número'})
         } else {
             if(aluno){
                 response.status(200)
                 response.json(dadosAluno)
             } else {
                 response.status(404)
+                response.json({message: 'Não foi encontrado nenhum aluno'})
             }
         }
     })
@@ -91,11 +96,19 @@ app.use((request, response, next) => {
     })
 
     //Insere um aluno novo 
-    app.post('/v1/lion-school/aluno', cors(), async function (request, response) {
+    app.post('/v1/lion-school/aluno', cors(), bodyParserJSON, async function (request, response) {
 
+        //Recebe os dados encaminhados na requisição
+        let dadosBody = request.body
+        console.log(dadosBody);
+
+        let resultDadosAluno = await controllerAluno.inserirAluno(dadosBody)
+
+        response.status(resultDadosAluno.status)
+        response.json(resultDadosAluno)
     })
 
-    //Atualiza um aluno existenten filtrando pelo ID
+    //Atualiza um aluno existente filtrando pelo ID
     app.put('/v1/lion-school/aluno/:id', cors(), async function (request, response) {
 
     })

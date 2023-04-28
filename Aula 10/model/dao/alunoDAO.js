@@ -1,16 +1,41 @@
 /****************************************************************************** 
 * Objetivo: Responsável pela manipulação de dados dos Alunos no Banco de Dados
-* Data: 14/04/2023
+* Data: 28/04/2023
 * Autor: André
-* Versão: 1.0
+* Versão: 1.1
 ******************************************************************************/
 
 //Import da biblioteca do prisma client
 var { PrismaClient } = require('@prisma/client')
 
-//Inserir dados do aluno no Banco de Dados
-const insertAluno = function (dadosAluno) {
+var prisma = new PrismaClient()
 
+//Inserir dados do aluno no Banco de Dados
+const insertAluno = async function (dadosAluno) {
+    
+    //ScriptSQL para inserir dados
+    let sql = `insert into tbl_aluno (
+                    nome,
+                    rg,
+                    cpf,
+                    data_nascimento,
+                    email
+                    ) values (
+                        '${dadosAluno.nome}',
+                        '${dadosAluno.rg}',
+                        '${dadosAluno.cpf}',
+                        '${dadosAluno.data_nascimento}',
+                        '${dadosAluno.email}'
+                    )`
+    
+    //Executa o script sql no banco de dados
+    let resultStatus = await prisma.$executeRawUnsafe(sql)
+
+    if(resultStatus) {
+        return true
+    } else {
+        return false
+    }
 }
 
 //Atualizar dados do aluno no Banco de Dados
@@ -25,8 +50,6 @@ const deleteAluno = function (id) {
 
 //Inserir dados do aluno no Banco de Dados
 const selectAllAlunos = async function () {
-    //Instancia da classe PrismaClient
-    let prisma = new PrismaClient()
 
     //Script SQL para buscar todos os itens no BD
     let sql = 'select * from tbl_aluno'
@@ -36,7 +59,7 @@ const selectAllAlunos = async function () {
     let rsAluno = await prisma.$queryRawUnsafe(sql)
 
     //Valida se o BD retornou algum registro
-    if (rsAluno.length > 0){
+    if (rsAluno.length > 0) {
         return rsAluno
     } else {
         return false
@@ -45,7 +68,6 @@ const selectAllAlunos = async function () {
 
 //Inserir dados do aluno no Banco de Dados
 const selectByIdAluno = async function (id) {
-    let prisma = new PrismaClient()
 
     //Script SQL para buscar todos os itens no BD
     let sql = 'select * from tbl_aluno where id =' + id
@@ -55,7 +77,7 @@ const selectByIdAluno = async function (id) {
     let rsAluno = await prisma.$queryRawUnsafe(sql)
 
     //Valida se o BD retornou algum registro
-    if (rsAluno.length > 0){
+    if (rsAluno.length > 0) {
         return rsAluno
     } else {
         return false
@@ -63,12 +85,11 @@ const selectByIdAluno = async function (id) {
 }
 
 const selectByNameAluno = async function (name) {
-    let prisma = new PrismaClient()
-
     let sql = `select * fro tbl_aluno like`
 }
 
 module.exports = {
     selectAllAlunos,
-    selectByIdAluno
+    selectByIdAluno,
+    insertAluno
 }
