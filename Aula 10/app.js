@@ -1,6 +1,6 @@
 /***************************************************************************************
 * Objetivo: API para integração entre Back e Banco e Dados (GET, POST, PUT, DELETE)
-* Data: 14/04/2023
+* Data: 05/05/2023
 * Autor: André Luiz
 * Versão: 1.0
 ***************************************************************************************/
@@ -17,6 +17,9 @@
 
 //Import do arquivo da controller que irá solicitar a model os dados do banco
 var controllerAluno = require('./controller/controller_aluno')
+
+//Import do arquivo de configuração das variáveis, constantes e funções globais
+var message = require('./controller/modulo/config.js')
 
 //Import das bibliotecas para API
 const express = require('express')
@@ -54,34 +57,17 @@ const bodyParserJSON = bodyParser.json()
 //Retorna todos os dados de alunos
 app.get('/v1/lion-school/aluno', cors(), async function (request, response) {
 
-    let dadosAluno = {}
-
     let nomeAluno = request.query.nome
-
 
     if (nomeAluno != undefined) {
 
-        let resultAluno = await controllerAluno.getBuscarAlunoName(nomeAluno)
+        let resultAluno = await controllerAluno.getAlunoByName(nomeAluno)
 
-        dadosAluno.aluno = resultAluno
-
-        if (resultAluno == false || resultAluno == undefined || resultAluno == null) {
-            response.status(400)
-            response.json('O nome enviado está incorreto')
-        } else {
-            if (resultAluno) {
-                response.status(200)
-                response.json(dadosAluno)
-            } else {
-                response.status(404)
-                response.json('Nenhum aluno encontrado no sistema')
-            }
-        }
+        response.status(200)
+        response.json(resultAluno)
     } else {
-
         //Recebe os dados da controllerAluno 
         let aluno = await controllerAluno.getAlunos()
-        dadosAluno = aluno
 
         if (aluno) {
             response.status(200)
@@ -99,43 +85,71 @@ app.get('/v1/lion-school/aluno/:id', cors(), async function (request, response) 
     let id = request.params.id
     let aluno = await controllerAluno.getBuscarAlunoID(id)
 
-    dadosAluno.aluno = aluno
-
-    if (id == '' || id == undefined || isNaN(id)) {
-        response.status(400)
-        response.json({ message: 'O ID passado está vazio ou não é um número' })
-    } else {
-        if (aluno) {
-            response.status(200)
-            response.json(dadosAluno)
-        } else {
-            response.status(404)
-            response.json({ message: 'Não foi encontrado nenhum aluno' })
-        }
-    }
+    response.json(aluno)
 })
 
 
 //Insere um aluno novo 
 app.post('/v1/lion-school/aluno', cors(), bodyParserJSON, async function (request, response) {
 
-    //Recebe os dados encaminhados na requisição
-    let dadosBody = request.body
+    let contentType = request.headers['content-type']
 
-    let resultDadosAluno = await controllerAluno.inserirAluno(dadosBody)
+    if (String(contentType).toLowerCase() == 'application/json') {
+        //Recebe os dados encaminhados na requisição
+        let dadosBody = request.body
 
-    response.status(resultDadosAluno.status)
-    response.json(resultDadosAluno)
+        let resultDadosAluno = await controllerAluno.inserirAluno(dadosBody)
+
+        response.status(resultDadosAluno.status)
+        response.json(resultDadosAluno)
+    } else {
+        response.status(message.ERROR_INVALID_CONTENT_TYPE.status)
+        response.json(message.ERROR_INVALID_CONTENT_TYPE)
+    }
+
+
 })
 
 //Atualiza um aluno existente filtrando pelo ID
-app.put('/v1/lion-school/aluno/:id', cors(), async function (request, response) {
+app.put('/v1/lion-school/aluno/:id', cors(), bodyParserJSON, async function (request, response) {
+
+    //Recebe o content-type da requisição
+    let contentType = request.headers['content-type']
+
+    //Validação para receber dados apenas no formato json
+    if (String(contentType).toLowerCase() == 'application/json') {
+        //Recebe o id do aluno pelo parametro
+        let idAluno = request.params.id
+        //Recebe os dados do aluno encaminhado no corpo da requisição
+        let dadosBody = request.body
+
+        let resultDadosAluno = await controllerAluno.atualizarAluno(dadosBody, idAluno)
+
+        response.status(resultDadosAluno.status)
+        response.json(resultDadosAluno)
+    } else {
+        response.status(message.ERROR_INVALID_CONTENT_TYPE.status)
+        response.json(message.ERROR_INVALID_CONTENT_TYPE)
+    }
+
 
 })
 
 //Exclui um aluno filtrando pelo ID
 app.delete('/v1/lion-school/aluno/:id', cors(), async function (request, response) {
+    let idAluno = request.params.id
 
+    let resultAll = await controllerAluno.getBuscarAlunoID(idAluno)
+
+    if (resultAll.status == 404) {
+        response.status(message.ERROR_ITEM_NOT_FOUND.status)
+        response.json(message.ERROR_ITEM_NOT_FOUND)
+    } else {
+        let result = await controllerAluno.deletarAluno(idAluno)
+
+        response.status(result.status)
+        response.json(result)
+    }
 })
 
 app.listen(8080, () => console.log('Servidor aguardando na porta 8080'))
