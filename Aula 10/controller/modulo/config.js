@@ -18,7 +18,7 @@ const ERROR_INVALID_ID = {status: 400, message: 'O ID informado na requisição 
 
 const ERROR_DELETED_ITEM = {status: 404, message: 'O item não pode ser excluido, pois ele não foi encontrado'}
 
-const ERROR_ITEM_NOT_FOUND = {status: 404, message: 'O item não pode ser excluido, pois ele não foi encontrado'}
+const ERROR_ITEM_NOT_FOUND = {status: 404, message: 'O item não pode ser encontrado na requisição.'}
 
 /******************************** MENSAGENS DE SUCESSO **********************************************/
 const SUCCESS_CREATED_ITEM = {status: 201, message: 'Item criado com sucesso.'}
@@ -26,6 +26,8 @@ const SUCCESS_CREATED_ITEM = {status: 201, message: 'Item criado com sucesso.'}
 const SUCCESS_UPDATED_ITEM = {status: 200, message: 'Item atualizado com sucesso.'}
 
 const SUCCESS_DELETED_ITEM = {status: 200, message: 'Item excluido com sucesso.'}
+
+const SUCCES_REQUEST = {status: 200, message: 'Requisição bem secedida'}
 
 
 
@@ -39,5 +41,6 @@ module.exports = {
     ERROR_INVALID_CONTENT_TYPE,
     SUCCESS_DELETED_ITEM,
     ERROR_DELETED_ITEM,
-    ERROR_ITEM_NOT_FOUND
+    ERROR_ITEM_NOT_FOUND,
+    SUCCES_REQUEST
 }

@@ -51,6 +51,8 @@ app.use((request, response, next) => {
 * Versão: 1.1
 ***********************************************************/
 
+//ENDPOINT: ALUNO
+
 //Define que os dados que iram chegar na requisição será no padrão JSON
 const bodyParserJSON = bodyParser.json()
 
@@ -63,31 +65,36 @@ app.get('/v1/lion-school/aluno', cors(), async function (request, response) {
 
         let resultAluno = await controllerAluno.getAlunoByName(nomeAluno)
 
-        response.status(200)
+        response.status(resultAluno.status)
         response.json(resultAluno)
     } else {
         //Recebe os dados da controllerAluno 
         let aluno = await controllerAluno.getAlunos()
 
-        if (aluno) {
-            response.status(200)
-            response.json(dadosAluno)
-        } else {
-            response.status(404)
-            response.json('Aluno não encontrado no sistema')
-        }
+        // if (aluno) {
+        //     response.status(200)
+        //     response.json(dadosAluno)
+        // } else {
+        //     response.status(404)
+        //     response.json('Aluno não encontrado no sistema')
+        // }
+
+        response.status(aluno.status)
+        response.json(aluno)
     }
 })
 
 //Retorna todos o aluno filtrando pelo ID
 app.get('/v1/lion-school/aluno/:id', cors(), async function (request, response) {
     let dadosAluno = {}
+
     let id = request.params.id
+
     let aluno = await controllerAluno.getBuscarAlunoID(id)
 
+    response.status(aluno.status)
     response.json(aluno)
 })
-
 
 //Insere um aluno novo 
 app.post('/v1/lion-school/aluno', cors(), bodyParserJSON, async function (request, response) {
@@ -139,17 +146,10 @@ app.put('/v1/lion-school/aluno/:id', cors(), bodyParserJSON, async function (req
 app.delete('/v1/lion-school/aluno/:id', cors(), async function (request, response) {
     let idAluno = request.params.id
 
-    let resultAll = await controllerAluno.getBuscarAlunoID(idAluno)
+    let result = await controllerAluno.deletarAluno(idAluno)
 
-    if (resultAll.status == 404) {
-        response.status(message.ERROR_ITEM_NOT_FOUND.status)
-        response.json(message.ERROR_ITEM_NOT_FOUND)
-    } else {
-        let result = await controllerAluno.deletarAluno(idAluno)
-
-        response.status(result.status)
-        response.json(result)
-    }
+    response.status(result.status)
+    response.json(result)
 })
 
 app.listen(8080, () => console.log('Servidor aguardando na porta 8080'))

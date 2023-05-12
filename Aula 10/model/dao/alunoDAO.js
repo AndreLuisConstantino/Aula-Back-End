@@ -99,7 +99,7 @@ const selectAllAlunos = async function () {
 const selectByIdAluno = async function (id) {
 
     //Script SQL para buscar todos os itens no BD
-    let sql = 'select * from tbl_aluno where id =' + id
+    let sql = `select * from tbl_aluno where id = ${id}`
 
     //$queryRawUnsafe() -> Permite interpretar uma variável como sendo um scriptSQL
     //$queryRaw('select * from tbl_aluno') -> Para interpretar o script SQL direto no método
@@ -113,6 +113,7 @@ const selectByIdAluno = async function (id) {
     }
 }
 
+//
 const selectByNameAluno = async function (name) {
 
     let sql = `select * from tbl_aluno where nome like '%${name}%'`
@@ -127,11 +128,27 @@ const selectByNameAluno = async function (name) {
     }
 }
 
+//Retorna o ultimo id inserido pelo banco de dados
+const selectLastID = async function () {
+
+    let sql = `select * from tbl_aluno order by id desc limit 1;`
+
+    let rsAluno = await prisma.$queryRawUnsafe(sql)
+
+    if(rsAluno.length > 0){
+        return rsAluno
+    } else {
+        return false
+    }
+
+}
+
 module.exports = {
     selectAllAlunos,
     selectByIdAluno,
     insertAluno, 
     selectByNameAluno,
     updateAluno,
-    deleteAluno
+    deleteAluno,
+    selectLastID
 }
